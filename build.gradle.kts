@@ -112,6 +112,10 @@ tasks.quarkusRun {
     jvmArgs = defaultJvmArgs
 }
 
+tasks.quarkusDev {
+    jvmArgs = defaultJvmArgs
+}
+
 tasks.test {
     jvmArgs(defaultJvmArgs)
 }
