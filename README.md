@@ -1,66 +1,36 @@
-# graalpy-quarkus-summarize
+# GraalPy Quarkus Demo
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This demo embeds [`markitdown`](https://github.com/microsoft/markitdown) and [`transformers`](https://github.com/huggingface/transformers) via [GraalPy](https://www.graalvm.org/python/) in a [Quarkus](https://quarkus.io) app.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
-## Running the application in dev mode
+## Running the application
 
-You can run your application in dev mode that enables live coding using:
-
-```shell script
-./gradlew quarkusDev
-```
-
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
-
-## Packaging and running the application
-
-The application can be packaged using:
+You can run the application using:
 
 ```shell script
-./gradlew build
+./gradlew quarkusRun
 ```
+> **_NOTE:_** Building the application may take some time as numerous Python packages with native extensions may need to be built from source.
 
-It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
+## Endpoints
 
-The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
+**/hello**: says hi from GraalPy
 ```shell script
-./gradlew build -Dquarkus.package.jar.type=uber-jar
+$ curl http://localhost:8080/hello
+Hi Quarkus from GraalPy
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
+**/convert**: converts a file to text using `markitdown`
 ```shell script
-./gradlew build -Dquarkus.native.enabled=true
+$ curl http://localhost:8080/convert -F "file=@/path/to/test.pdf"
+Lorem ipsum...
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
+**/summarize**: summarizes text converted from a file using `markitdown` and `transformers`
 ```shell script
-./gradlew build -Dquarkus.native.enabled=true -Dquarkus.native.container-build=true
+curl http://localhost:8080/convert -F "file=@/path/to/test.pdf"
+Summary of lorem ipsum...
 ```
+> **_NOTE:_** The selected model (*HuggingFaceTB/SmolLM2-360M*) is not able to handle a lot of text. If you want to summarize larger amounts of text, consider using a different model.
 
-You can then execute your native executable with: `./build/graalpy-quarkus-summarize-1.0.0-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/gradle-tooling>.
-
-## Related Guides
-
-- Kotlin ([guide](https://quarkus.io/guides/kotlin)): Write your services in Kotlin
-
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+Example files are available in the [`markitdown` repository](https://github.com/microsoft/markitdown/tree/8a9d8f15936b2068bcb39ccc8d3b317f93784d86/packages/markitdown/tests/test_files).
