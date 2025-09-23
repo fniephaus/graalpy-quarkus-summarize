@@ -10,7 +10,7 @@ You can run the application using:
 ```shell script
 ./gradlew quarkusRun
 ```
-> **_NOTE:_** Building the application may take some time as numerous Python packages with native extensions may need to be built from source.
+> **_NOTE:_** Prebuilt binary wheels for this demo should soon be available in the [GraalPy PyPI repository](https://www.graalvm.org/python/wheels/). Until then, building the application may take some time as numerous Python packages with native extensions may need to be built from source.
 
 ## Endpoints
 

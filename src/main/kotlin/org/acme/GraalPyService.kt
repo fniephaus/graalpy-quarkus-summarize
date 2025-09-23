@@ -38,11 +38,13 @@ class GraalPyService @Inject constructor(
                 
                 
                 def summarize(text):
-                    input_text = text + "\n\nIn summary, tl;dr in one sentence the above says that"
+                    input_text = text + "\n\nIn summary, tl;dr in one sentence the above says the following:\n"
                     inputs = tokenizer.encode(input_text, return_tensors="pt")
                     output = model.generate(inputs)
                     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
-                    return generated_text[len(input_text):]
+                    result = generated_text[len(input_text):]
+                    idx = result.find('.')
+                    return result[:idx+1] if idx != -1 else result
             """.trimIndent()
             )
     }
